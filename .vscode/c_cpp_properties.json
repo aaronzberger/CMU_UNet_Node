@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/aaron/catkin_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/aaron/catkin_ws/src/bag_testing/include/**",
+        "/home/aaron/catkin_ws/src/cmu_trajectory_error/include/**",
+        "/home/aaron/catkin_ws/src/husky_joystick_driving/include/**",
+        "/home/aaron/catkin_ws/src/pid_controller/include/**",
+        "/home/aaron/catkin_ws/src/pure_pursuit/include/**",
+        "/home/aaron/catkin_ws/src/trajectory_error/include/**",
+        "/home/aaron/catkin_ws/src/velo_test/include/**",
+        "/home/aaron/catkin_ws/src/velodyne/velodyne_driver/include/**",
+        "/home/aaron/catkin_ws/src/DataspeedInc-velodyne_simulator-b5aa0c41f681/velodyne_gazebo_plugins/include/**",
+        "/home/aaron/catkin_ws/src/velodyne/velodyne_laserscan/include/**",
+        "/home/aaron/catkin_ws/src/velodyne/velodyne_pcl/include/**",
+        "/home/aaron/catkin_ws/src/velodyne/velodyne_pointcloud/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ]
+}
