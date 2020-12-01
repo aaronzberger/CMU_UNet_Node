@@ -141,6 +141,12 @@ def distance_to_origin(l1):
     a, b, c = segment_to_standard(l1)
     return line_to_point(200, 200, a, b, c)
 
+def image_to_polar(lines):
+    #TODO:
+    # Convert the lines from x1, y1, x2, y2 to distance and theta
+    left_lines = []
+    right_lines = []
+    return left_lines, right_lines
 
 def get_lines(prediction_map):
     # CxWxH to WxHxC and convert to grayscale image format (0-255 and 8-bit int)
@@ -190,6 +196,4 @@ def get_lines(prediction_map):
             finalLines.append(bestLine)
             # finalLines.append(bestLine[0])
 
-    return finalLines
-
-            
+    return image_to_polar(lines)

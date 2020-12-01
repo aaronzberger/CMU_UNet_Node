@@ -11,6 +11,7 @@ from sensor_msgs import point_cloud2
 import post_process
 from msg import line_list
 import std_msgs.msg
+from pre_process import pcl_to_bev
 
 class Lidar_Process_Node:
     def __init__(self):
@@ -38,20 +39,22 @@ class Lidar_Process_Node:
         return net, loss_fn
 
     def velodyne_callback(self, data):
-        #Convert lidar frame to 400 x 400
+        input = pcl_to_bev(data)
 
         # Pass through the model and apply a sigmoid
-        prediction_map = torch.sigmoid(net(input))
+        prediction_map = torch.sigmoid(self.net(input))
 
-        lines = post_process.get_lines(prediction_map)
-        lines = np.array(lines, np.uint16)
+        # Extract lines from UNet output
+        left_lines, right_lines = post_process.get_lines(prediction_map)
+        left_lines, right_lines = np.array(left_lines, np.uint16), np.array(right_lines, np.uint16)
 
         header = std_msgs.msg.Header()
         header.stamp = rospy.Time.now()
 
         msg = line_list()
         msg.header = header
-        msg.lines = lines
+        msg.left_lines = left_lines
+        msg.right_lines = right_lines
 
         self.pub_lines.publish(msg)
 
