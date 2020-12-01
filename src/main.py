@@ -6,10 +6,9 @@ import torch
 import torch.nn as nn
 import cv2 as cv
 from unet import UNet
-from loss import ClassificationLoss
-from sensor_msgs import point_cloud2
+from sensor_msgs.msg import PointCloud2
 import post_process
-from msg import line_list
+from cmu_unet.msg import line_list
 import std_msgs.msg
 from pre_process import pcl_to_bev
 
@@ -20,29 +19,42 @@ class Lidar_Process_Node:
         else:
             self.device = torch.device('cpu')
 
-        self.net, self.loss_fn = self.build_model(device=self.device)
+        self.net = self.build_model()
 
-        self.sub_velodyne = rospy.Subscriber('/velodyne_points', point_cloud2, self.velodyne_callback)
+        rospy.loginfo("Successfullly built UNet model")
 
-        self.pub_lines = rospy.Publisher('/unet_lines', line_list)
+        self.sub_velodyne = rospy.Subscriber('/velodyne_points', PointCloud2, self.velodyne_callback)
+
+        self.pub_lines = rospy.Publisher('/unet_lines', line_list, queue_size=1)
 
 
-    def build_model(self, device):
+    def build_model(self):
         out_channels = 1
         net = UNet()
 
-        loss_fn = ClassificationLoss(device)
+        net.load_state_dict(torch.load("/home/aaron/catkin_ws/src/cmu_unet/src/state_dict/120epoch", map_location=self.device))
 
-        net = net.to(device)
-        loss_fn = loss_fn.to(device)
+        net = net.to(self.device)
 
-        return net, loss_fn
+        net.eval()
+
+        return net
 
     def velodyne_callback(self, data):
+        rospy.loginfo("Received a velodyne frame")
+
+        # Pre-process
         input = pcl_to_bev(data)
 
+        pcl = np.array(input.cpu() * 255, dtype=np.uint8)
+        image_pcl = np.amax(pcl, axis=0)
+        cv.imwrite("/home/aaron/velo_frame.jpg", image_pcl)
+
+        rospy.loginfo("Wrote an image of the point cloud")
+
         # Pass through the model and apply a sigmoid
-        prediction_map = torch.sigmoid(self.net(input))
+        with torch.no_grad():
+            prediction_map = torch.sigmoid(self.net(input))
 
         # Extract lines from UNet output
         left_lines, right_lines = post_process.get_lines(prediction_map)
@@ -60,7 +72,7 @@ class Lidar_Process_Node:
 
 
 if __name__ == "__main__":
-    rospy.init_node('unet')
+    rospy.init_node('unet', log_level=rospy.INFO)
 
     lidar_process_node = Lidar_Process_Node()
 

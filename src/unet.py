@@ -1,5 +1,5 @@
 import torch.nn as nn
-import torch.nn.Functional as F
+import torch.nn.functional as F
 import torch
 
 class UNetConv2(nn.Module):
@@ -50,7 +50,7 @@ class UNet(nn.Module):
     ):
         super(UNet, self).__init__()
         self.use_deconv = use_deconv
-        self.in_channels = [400, 400, 24]
+        self.in_channels = 24
         self.use_batchnorm = use_batchnorm
         self.feature_scale = feature_scale
 
