@@ -10,6 +10,7 @@ project(cmu_unet)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   message_generation
+  std_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -103,7 +104,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES cmu_unet
-  CATKIN_DEPENDS message_runtime, rospy
+  CATKIN_DEPENDS message_runtime std_msgs
 #  DEPENDS system_lib
 )
 

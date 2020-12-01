@@ -1,0 +1,6 @@
+.vscode/**
+src/numpy_pc2.pyc
+src/post_process.pyc
+src/pre_process.pyc
+src/unet.pyc
+state_dict/120epoch
