@@ -1,4 +1,4 @@
-#!/home/aaron/py27/bin/python
+#!YOUR_INTERPRETER_HERE
 
 import rospy
 import numpy as np
@@ -32,7 +32,7 @@ class Lidar_Process_Node:
         net = UNet()
 
         # Load the weights as trained with 120 epochs
-        net.load_state_dict(torch.load("/home/aaron/catkin_ws/src/cmu_unet/state_dict/120epoch", map_location=self.device))
+        net.load_state_dict(torch.load("PATH TO STATE DICT", map_location=self.device))
 
         net = net.to(self.device)
         net.eval()
@@ -47,7 +47,7 @@ class Lidar_Process_Node:
         # Save an image of the point cloud:
         # pcl = np.array(input.cpu() * 255, dtype=np.uint8).transpose(2, 0, 1)
         # image_pcl = np.amax(pcl, axis=0)
-        # cv.imwrite("/home/aaron/velo_frame.jpg", image_pcl)
+        # cv.imwrite("FILENAME", image_pcl)
 
         # Convert the image to tensor format
         input = input.permute(2, 0, 1).unsqueeze(0)
@@ -67,7 +67,7 @@ class Lidar_Process_Node:
         #     for line in lines:
         #         cv.line(prediction_image, (line[0][0], line[0][1]), (line[0][2], line[0][3]), (0, 0, 255), 2, cv.LINE_AA)
         
-        # cv.imwrite("/home/aaron/unet_output.jpg", prediction_image)
+        # cv.imwrite("FILENAME", prediction_image)
 
         # Convert the lines from image pixel coordinates to robot coordinates
         lines_wrt_robot = self.post_process.segment_image_to_robot(lines)

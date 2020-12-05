@@ -1,5 +1,3 @@
-#!/home/aaron/py27/bin/python
-
 import math
 from shapely.geometry import LineString
 import numpy as np

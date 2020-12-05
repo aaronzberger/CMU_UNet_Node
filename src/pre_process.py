@@ -1,5 +1,3 @@
-#!/home/aaron/py27/bin/python
-
 import numpy as np
 from transformations import euler_matrix
 from math import radians

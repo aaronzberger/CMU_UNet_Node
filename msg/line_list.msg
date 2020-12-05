@@ -1,6 +1,7 @@
 Header header
 
-# Lines will be ordered outward:
-# Index [0] is the closest to the robot, index [len] is furthest
-
 line[] lines
+uint8 num_lines
+
+# The line array is unordered. 
+# The EKF Node will sort and smooth these line readings.

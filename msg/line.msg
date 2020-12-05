@@ -1,4 +1,4 @@
-# Robot coordinates (in meters)
+# Robot coordinates of line endpoints (in meters)
 
 float64 x1
 float64 y1
