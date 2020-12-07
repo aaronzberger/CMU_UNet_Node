@@ -7,7 +7,7 @@ import torch.nn as nn
 import cv2 as cv
 from unet import UNet
 from sensor_msgs.msg import PointCloud2
-from cmu_unet.msg import line_list, line
+from cmu_unet.msg import line_list, line_2pts
 import std_msgs.msg
 from pre_process import Pre_Process
 from post_process import Post_Process
@@ -79,6 +79,7 @@ class Lidar_Process_Node:
         msg = line_list()
         msg.header = header
         msg.lines = lines_wrt_robot
+        msg.num_lines = len(lines_wrt_robot)
         self.pub_lines.publish(msg)
 
 

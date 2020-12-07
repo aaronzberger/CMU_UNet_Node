@@ -3,7 +3,7 @@ from shapely.geometry import LineString
 import numpy as np
 import cv2 as cv
 from pre_process import Pre_Process
-from cmu_unet.msg import line, line_list
+from cmu_unet.msg import line_2pts, line_list
 
 class Post_Process:
     def __init__(self, width, length, layer_2_weight=0.5, layer_3_weight=0.2, length_weight=1.5):
@@ -181,7 +181,7 @@ class Post_Process:
         new_lines = []
 
         for l in lines:
-            new_line = line()
+            new_line = line_2pts()
             new_line.x1 = l[0][0] * scaling[1] + mins[1]
             new_line.y1 = l[0][1] * scaling[0] + mins[0]
             new_line.x2 = l[0][2] * scaling[1] + mins[1]

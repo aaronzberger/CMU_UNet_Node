@@ -22,7 +22,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   line_list.msg
-  line.msg
+  line_2pts.msg
 )
 
 ## Generate added messages and services with any dependencies listed here

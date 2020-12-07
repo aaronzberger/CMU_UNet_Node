@@ -1,6 +1,6 @@
 Header header
 
-line[] lines
+line_2pts[] lines
 uint8 num_lines
 
 # The line array is unordered. 
