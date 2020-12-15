@@ -2,20 +2,27 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
+
 class UNetConv2(nn.Module):
     def __init__(self, in_size, out_size, use_batchnorm):
         super(UNetConv2, self).__init__()
 
         if use_batchnorm:
             self.conv1 = nn.Sequential(
-                nn.Conv2d(in_size, out_size, 3, 1, 1), nn.BatchNorm2d(out_size), nn.ReLU()
+                nn.Conv2d(in_size, out_size, 3, 1, 1),
+                nn.BatchNorm2d(out_size),
+                nn.ReLU()
             )
             self.conv2 = nn.Sequential(
-                nn.Conv2d(out_size, out_size, 3, 1, 1), nn.BatchNorm2d(out_size), nn.ReLU()
+                nn.Conv2d(out_size, out_size, 3, 1, 1),
+                nn.BatchNorm2d(out_size),
+                nn.ReLU()
             )
         else:
-            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1), nn.ReLU())
-            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1), nn.ReLU())
+            self.conv1 = nn.Sequential(nn.Conv2d(in_size, out_size, 3, 1, 1),
+                                       nn.ReLU())
+            self.conv2 = nn.Sequential(nn.Conv2d(out_size, out_size, 3, 1, 1),
+                                       nn.ReLU())
 
     def forward(self, inputs):
         outputs = self.conv1(inputs)
@@ -28,25 +35,26 @@ class UNetUp(nn.Module):
         super(UNetUp, self).__init__()
         self.conv = UNetConv2(in_size, out_size, False)
         if use_deconv:
-            self.up = nn.ConvTranspose2d(in_size, out_size, kernel_size=2, stride=2)
+            self.up = nn.ConvTranspose2d(
+                in_size, out_size, kernel_size=2, stride=2)
         else:
             self.up = nn.UpsamplingBilinear2d(scale_factor=2)
 
     def forward(self, inputs1, inputs2):
         outputs2 = self.up(inputs2)
         offset = inputs1.size()[2] - outputs2.size()[2]
-        offset2 = inputs1.size()[3] - outputs2.size()[3]
 
         padding = 2 * [offset // 2, offset // 2]
 
         outputs2 = F.pad(outputs2, padding)
-  
+
         return self.conv(torch.cat([inputs1, outputs2], 1))
 
 
 class UNet(nn.Module):
     def __init__(
-        self, feature_scale=1, output_dim=1, use_deconv=True, use_batchnorm=True
+        self, feature_scale=1, output_dim=1,
+        use_deconv=True, use_batchnorm=True
     ):
         super(UNet, self).__init__()
         self.use_deconv = use_deconv
@@ -58,7 +66,8 @@ class UNet(nn.Module):
         filters = [int(x / self.feature_scale) for x in filters]
 
         # downsampling
-        self.conv1 = UNetConv2(self.in_channels, filters[0], self.use_batchnorm)
+        self.conv1 = UNetConv2(
+            self.in_channels, filters[0], self.use_batchnorm)
         self.maxpool1 = nn.MaxPool2d(kernel_size=2)
 
         self.conv2 = UNetConv2(filters[0], filters[1], self.use_batchnorm)

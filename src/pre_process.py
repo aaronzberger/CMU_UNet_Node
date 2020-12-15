@@ -1,35 +1,37 @@
 import numpy as np
-from transformations import euler_matrix
-from math import radians
 from numpy_pc2 import pointcloud2_to_xyz_array
-import torch
+
 
 class Pre_Process:
     def __init__(self, width, length, height):
-        '''Set the tuples of min and max for width, length, and height of Lidar points'''
+        '''Set the tuples of min and max for
+        width, length, and height of Lidar points'''
         self.width = width
         self.length = length
         self.height = height
 
     def get_scaling_values(self):
-        '''Returns the min and max values for width, length, and height (as tuples)'''
+        '''Returns the min and max values for
+        width, length, and height (as tuples)'''
         return self.width, self.length, self.height
 
     def pcl_to_bev(self, point_cloud):
         '''
-        Converts a PointCloud2 object to an image, so it may be passed into UNet
+        Converts a PointCloud2 object to an image,
+        so it may be passed into UNet
 
         Parameters:
             point_cloud (PointCloud2): a point cloud retreived from the Lidar
 
         Returns:
-            numpy.ndarray: A black image with white pixels where Lidar points were
+            numpy.ndarray: A black image with white pixels
+            where Lidar points were
         '''
         pcl = pointcloud2_to_xyz_array(point_cloud)
 
         bev = np.zeros((400, 400, 24), dtype='float32')
 
-        # If there is tilt in the sensor, use the code below & input degrees tilt
+        # If there is sensor tilt, use the code below & input degrees tilt
         # pitch = radians(3.0)
         # R_extrinsic = euler_matrix(0, pitch, 0)[0:3, 0:3]
 
@@ -44,7 +46,7 @@ class Pre_Process:
             (pcl[:, 0] > self.width[0]) &
             (pcl[:, 0] < self.width[1]) &
             (pcl[:, 1] > self.length[0]) &
-            (pcl[:, 1] < self.length[1]) & 
+            (pcl[:, 1] < self.length[1]) &
             (pcl[:, 2] > self.height[0]) &
             (pcl[:, 2] < self.height[1])
         ]
