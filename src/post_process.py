@@ -221,7 +221,7 @@ class Post_Process:
         # CxWxH to WxHxC and convert to
         # grayscale image format (0-255 and 8-bit int)
         prediction_gray = np.array(
-            prediction_map[0].cpu() * 255,
+            prediction_map * 255,
             dtype=np.uint8).transpose(1, 2, 0)
 
         # Blurring

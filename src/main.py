@@ -62,12 +62,14 @@ class Lidar_Process_Node:
         with torch.no_grad():
             prediction_map = torch.sigmoid(self.net(input.to(self.device)))
 
+        prediction_map = prediction_map[0].cpu()
+
         # Post-process the image into lines
         lines = self.post_process.extract_lines(prediction_map)
 
         # Save an image of the network output:
         prediction_image = np.array(
-           prediction_map[0].cpu() * 255, dtype=np.uint8).transpose(1, 2, 0)
+           prediction_map * 255, dtype=np.uint8).transpose(1, 2, 0)
         prediction_image = cv.cvtColor(prediction_image, cv.COLOR_GRAY2BGR)
 
         if lines is not None:
