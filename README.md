@@ -49,7 +49,7 @@ Each node is a separate ROS node, each receiving and publishing relevant data.
 
 Code locations for the other nodes are listed below:
 - [__ROW TRACKING__](https://github.com/aaronzberger/CMU_EKF_Node)
-- __PATH PLANNING__ (Not yet on Github)
+- [__PATH PLANNING__](https://github.com/aaronzberger/CMU_Path_Planning_Node)
 - __DRIVING__ (Not yet on Github)
 
 ## Usage
