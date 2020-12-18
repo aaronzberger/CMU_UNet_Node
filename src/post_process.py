@@ -188,6 +188,9 @@ class Post_Process:
             array of line.msg: an array of line message objects
             containing the converted points
         '''
+        if lines is None:
+            return []
+
         mins = np.array([self.width[0], self.length[0]])
 
         scaling = np.array([
