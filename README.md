@@ -70,9 +70,9 @@ Python scripts for extracting point clouds from bags and saving them as `.np` fi
 A custom labeler for labeling the point clouds with ground truth lines is also provided in the code above.
 
 ## Training
-The [code](https://github.com/jnmacdnld/ag_lidar_navigation/tree/bev) for training, validation, pre-processing bag files, etc. was developed by John Macdonald.
+The code for training, labeling, and testing loss functions is available [here](https://github.com/aaronzberger/CMU_Lidar_Navigation).
 
-The state dictionary trained for 120 epochs is too large to upload to Github, but training is rather easy with the code provided above.
+Check out that repository for details on training with different loss functions.
 
 #### Point Cloud Trimming
 In pre-processing, the point clouds need to be trimmed to ensure all points can fit within the \[24, 400, 400] image. This means there must be minimums and maximums for width, length, and height.
@@ -97,14 +97,7 @@ The pixel mapping is done [here](https://github.com/aaronzberger/CMU_UNet_Node/b
 #### Training Time
 Training on an NVIDIA RTX 2080 with 2,087 point clouds, with a batch size of 4, each epoch takes around 2.9 mins.
 
-With validation after every epoch, full training to 120 epochs will take around 6-8 hours.
-
-#### Loss and Prediction Maps
-Using the `ClassificationLoss` class provided for the loss function, expect around `0.65` loss with no training, followed by a sharp decrease to around `0.01`. From here, loss may not appear to decrease by much (on some epochs, it may even increase a bit), but the model is still experiencing useful training. 
-
-If you save images of the prediction maps, you can see the lines become skinnier as the model trains more, even if loss remains the same. These skinnier lines make post-processing easier and more accurate.
-
 ## Acknowledgements
-- John Macdonald for [Lidar pre-processing and training](https://github.com/jnmacdnld/ag_lidar_navigation/tree/bev)
+- John Macdonald for Lidar pre-processing and labeling
 - Olaf Ronneberger, Philipp Fischer, Thomas Brox for the [U-Net Architecture](https://lmb.informatik.uni-freiburg.de/people/ronneber/u-net/)
 - Jon Binney for [`numpy_pc2.py`](https://github.com/dimatura/pypcd/blob/master/pypcd/numpy_pc2.py)
